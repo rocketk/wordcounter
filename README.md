@@ -16,6 +16,7 @@ python word_counter.py sophiesworld_1_to_2.txt
 
 # contact me
 qq: 450550330
+
 email: pengyufreedom@aliyun.com
 
 
