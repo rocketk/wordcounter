@@ -1,11 +1,15 @@
-import urllib2, json, sys
+import codecs
+import json
+import urllib2
 
 
-def fetch_translations_from_file(file):
+def fetch_translations_from_file(words_file="results.txt"):
     trans_list = []
-    with open(file) as f:
+    with open(words_file) as f:
         for line in f:
-            trans = fetch_translation(line.split(","))
+            splited = line.split(",")
+            trans = fetch_translation(splited[0])
+            trans['count_in_book'] = splited[1]
             trans_list.append(trans)
     return trans_list
 
@@ -26,12 +30,11 @@ def fetch_translation(word):
     return json_content
 
 
-def write_to_file(data, file='data1.txt'):
-    f = open(file, 'w')
-    for item in data:
-        for field in item:
-            f.write(str(field)+',')
-        f.write('\n')
+def write_to_file(data, file='data.js'):
+    with codecs.open(file, 'w', "utf-8-sig") as f:
+        f.write("var words = ")
+        f.write(json.dumps(trans_list, indent=4, ensure_ascii=False))
+        f.close()
 
 
 if __name__ == '__main__':
@@ -40,5 +43,8 @@ if __name__ == '__main__':
     # translations = fetch_translations_from_file(words_file)
     # print "writing file"
     # write_to_file(translations)
-    data = json.dumps(fetch_translation('windmill'), indent=4, ensure_ascii=False)
-    print data
+    # data = json.dumps(fetch_translation('windmill'), indent=4, ensure_ascii=False)
+    # print data
+    trans_list = fetch_translations_from_file()
+    # print json.dumps(trans_list, indent=4, ensure_ascii=False)
+    write_to_file(trans_list)
