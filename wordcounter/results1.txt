@@ -1,0 +1,5 @@
+comrade,96,NN,
+windmill,73,NN,
+squealer,67,NN,
+farmhouse,34,NN,
+frederick,34,NN,

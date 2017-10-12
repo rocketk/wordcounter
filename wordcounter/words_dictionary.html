@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="jquery-1.12.4.min.js"></script>
+    <style type="text/css">
+        .tab thead tr {
+            background-color: #CCCCFF;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bolder;
+        }
+        .tab tbody tr:nth-child(odd) {
+            background-color: #FFCCCC;
+        }
+        .tab tbody tr:nth-child(even) {
+            background-color: #FFFF99;
+        }
+        .phonetic_symbol {
+            font-family: "Times New Roman";
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+<table id="words_table" class="tab">
+    <thead>
+    <tr>
+        <td>Word</td>
+        <td>Phonetic Symbol</td>
+        <td>Basic Desciption</td>
+        <td>Web Description</td>
+        <td>Phrase(s)</td>
+    </tr>
+    </thead>
+
+
+</table>
+<script type="text/javascript" src="data.js" charset="utf-8"></script>
+<script type="text/javascript">
+    var table = $("#words_table");
+    function appendNewLineToTable(word) {
+        var tr = $("<tr></tr>");
+        // td: the word
+        var td_word = $("<td></td>"); // the word
+        td_word.append(word["rq"]);
+        tr.append(td_word);
+        // td: phonetic symbols
+        var td_phonetic_symbol = $("<td></td>");
+        var phonetic_symbol_uk_span = $("<span class='phonetic_symbol'></span>");
+        phonetic_symbol_uk_span.append(word["uksm"]);
+        td_phonetic_symbol.append("UK: ");
+        td_phonetic_symbol.append(phonetic_symbol_uk_span);
+        var phonetic_symbol_us_span = $("<span class='phonetic_symbol'></span>");
+        phonetic_symbol_us_span.append(word["ussm"]);
+        td_phonetic_symbol.append("<br/>US: ");
+        td_phonetic_symbol.append(phonetic_symbol_us_span);
+        tr.append(td_phonetic_symbol);
+        // td: basic desciption
+        var td_basic = $("<td></td>"); // basic desciption
+        for (var i = 0; i < word.basic.length; i++) {
+            td_basic.append(word.basic[i] + "<br/>");
+        }
+        tr.append(td_basic);
+        // td: web description
+        var td_web = $("<td></td>"); // web description
+        if(word.web && word.web.length > 0) {
+            var key = Object.keys(word.web[0])[0];
+            td_web.append(key + ": " + word.web[0][key]);
+        }
+        tr.append(td_web);
+        // td: phrases
+        var td_phrases = $("<td></td>"); // phrases
+        if(word.web && word.web.length > 1) {
+            for(var i = 1; i < word.web.length; i++) {
+                var key = Object.keys(word.web[i])[0];
+                td_phrases.append(key + ": " + word.web[i][key] + "<br/>");
+            }
+        }
+        tr.append(td_phrases);
+        table.append(tr);
+    }
+
+    for(var i=0; i<words.length; i++) {
+        var word = words[i];
+        appendNewLineToTable(word);
+    }
+</script>
+</body>
+</html>
