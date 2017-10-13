@@ -3,14 +3,19 @@ import json
 import urllib2
 
 
-def fetch_translations_from_file(words_file="results.txt"):
+def fetch_translations_from_file(words_file="filtered_results.txt"):
     trans_list = []
+    total = 0
     with open(words_file) as f:
         for line in f:
             splited = line.split(",")
             trans = fetch_translation(splited[0])
             trans['count_in_book'] = splited[1]
             trans_list.append(trans)
+            total += 1
+            if total % 100 == 0:
+                print "fetched {0} words".format(total)
+    print "all words are fetched successfully, total " + total
     return trans_list
 
 

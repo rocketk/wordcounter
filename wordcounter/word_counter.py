@@ -91,7 +91,8 @@ def append_ext(words):
         new_words.append((word, count, tag))
     return new_words
 
-def write_to_file(words, file='results.txt'):
+
+def write_to_file(words, file='target/all_words_of_the_book.txt'):
     f = open(file, 'w')
     for item in words:
         for field in item:
