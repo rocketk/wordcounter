@@ -1,0 +1,4 @@
+word_counter.py: book.txt --> all_words_of_the_book.txt
+filter_easy_words.py: all_words_of_the_book.txt --> filter_words.txt
+fetch_translations.py: filter_words.txt --> data.js
+copy_resources: resources/ --> output/

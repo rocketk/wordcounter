@@ -92,7 +92,7 @@ def append_ext(words):
     return new_words
 
 
-def write_to_file(words, file='target/all_words_of_the_book.txt'):
+def write_to_file(words, file='output/all_words_of_the_book.txt'):
     f = open(file, 'w')
     for item in words:
         for field in item:
