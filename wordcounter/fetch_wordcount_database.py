@@ -53,11 +53,10 @@ def fetch_all():
 
 
 def write_to_file(words_list):
-    with open("output/wordcount_db_list.txt", "w") as f:
+    with open("cache/wordcount_db.json", "w") as f:
         f.write(json.dumps(words_list) + "\n")
         # for item in words_list:
         #     f.write(json.dumps(item) + "\n")
-
 
 
 if __name__ == '__main__':

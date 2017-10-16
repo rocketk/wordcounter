@@ -1,4 +1,4 @@
-import sys,re,collections,nltk
+import os,re,collections,nltk,ConfigParser
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 
@@ -92,8 +92,9 @@ def append_ext(words):
     return new_words
 
 
-def write_to_file(words, file='output/all_words_of_the_book.txt'):
-    f = open(file, 'w')
+def write_to_file(words, output_path="output/", output_file='all_words_of_the_book.txt'):
+    os.makedirs(output_path)
+    f = open(output_path + output_file, 'w')
     for item in words:
         for field in item:
             f.write(str(field)+',')
@@ -101,9 +102,12 @@ def write_to_file(words, file='output/all_words_of_the_book.txt'):
 
 
 if __name__=='__main__':
-    book = sys.argv[1]
+    config = ConfigParser.RawConfigParser()
+    config.read('config.properties')
+    book_name = config.get("default", "book_name")
+    output_path = config.get("default", "output_path")
     print "counting..."
-    words = get_words(book)
+    words = get_words(book_name)
     print "writing file..."
-    write_to_file(append_ext(words.most_common()))
+    write_to_file(append_ext(words.most_common()), output_path=output_path)
     
