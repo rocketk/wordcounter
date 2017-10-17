@@ -61,7 +61,7 @@ def write_to_dict_db(words_dict, output_file='cache/translations_in_dict.json'):
 def write_to_js_file(trans_list, output_path="output/", output_file='data.js'):
     with codecs.open(output_path + output_file, 'w', "utf-8-sig") as f:
         f.write("var words = ")
-        f.write(json.dumps(trans_list, indent=4, ensure_ascii=False))
+        f.write(json.dumps(trans_list, ensure_ascii=False))
 
 
 def list_to_dict():
