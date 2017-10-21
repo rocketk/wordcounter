@@ -37,6 +37,7 @@ def fetch_translations_from_file(output_path="output/", words_file="filtered_wor
     # if count_from_internet > 0:
     #     print "rewritting fetched translationgs to local cache file"
     #     write_to_dict_db(dictionary_db_cache)
+    trans_list = remove_duplicate_by_rq(trans_list)
     return trans_list, failed
 
 
@@ -67,8 +68,8 @@ def read_translations_db(dict_db_file="cache/translations_in_list.txt"):
             for line in f:
                 i += 1
                 translate_dict = json.loads(line, encoding="utf-8")
-                if translate_dict and 'rq' in translate_dict:
-                    translations_dict[translate_dict['rq']] = translate_dict
+                if translate_dict and 'oq' in translate_dict:
+                    translations_dict[translate_dict['oq']] = translate_dict
         except:
             print i, line
             raise
@@ -80,36 +81,21 @@ def write_to_dict_db(words_dict, output_file='cache/translations_in_dict.json'):
         f.write(json.dumps(words_dict, indent=4, ensure_ascii=False))
 
 
+def remove_duplicate_by_rq(trans_list):
+    new_trans_list = []
+    rq_list = []
+    for one in trans_list:
+        if one['rq'] not in rq_list:
+            rq_list.append(one['rq'])
+            new_trans_list.append(one)
+    print "{0} words are duplicated, all words: {1}".format(len(trans_list) - len(new_trans_list), len(trans_list))
+    return new_trans_list
+
 def write_to_js_file(trans_list, output_path="output/", output_file='data.js'):
     print("writing js file")
     with codecs.open(output_path + output_file, 'w', "utf-8") as f:
         f.write("var words = ")
         f.write(json.dumps(trans_list, ensure_ascii=False))
-
-
-def tranform_file_from_list_to_dict():
-    with codecs.open("cache/translations_in_list.json", 'r', "utf-8") as f:
-        translations_list = json.loads(f.read())
-    print "read {0} words".format(len(translations_list))
-    translations_dict = {}
-    for word_dict in translations_list:
-        if 'rq' in word_dict:
-            translations_dict[word_dict['rq']] = word_dict
-    with codecs.open("cache/translations_in_dict.json", 'w', "utf-8") as f:
-        f.write(json.dumps(translations_dict, indent=4, ensure_ascii=False))
-    print "write {0} words".format(len(translations_dict))
-
-
-def transform_file_from_dict_to_list():
-    with codecs.open("cache/translations_in_dict.json", 'r', "utf-8") as f:
-        translations_dict = json.loads(f.read())
-    print "read {0} words".format(len(translations_dict))
-    translations_list = []
-    for key in translations_dict:
-        translations_list.append(translations_dict[key])
-    with codecs.open("cache/translations_in_list.txt", 'w', "utf-8") as f:
-        for one in translations_list:
-            f.write(json.dumps(one, ensure_ascii=False) + "\n")
 
 
 if __name__ == '__main__':
@@ -122,7 +108,3 @@ if __name__ == '__main__':
     else:
         print "failed words: " + failed_list
 
-        # transform_file_from_dict_to_list()
-    # json_str = "{\"lang\": \"eng\", \"ltype\": \"ec\", \"uksm\": \"hə:'maiəni\", \"rq\": \"Hermione\", \"web\": [{\"Hermione\": [\"赫敏\", \"妙丽\", \"赫女星\"]}, {\"Hermione Corfield\": [\"赫敏·科菲尔德\"]}, {\"Hermione Grfrustrine\": [\"赫敏·格兰杰\"]}], \"usspeach\": \"Hermione&type=2\", \"basic\": [\"n. 赫尔迈厄尼（女子名）；希腊神话Menelzus 与helen 之女\"], \"ussm\": \"hə:'maiəni\", \"lname\": \"英汉翻译\", \"ukspeach\": \"Hermione&type=1\", \"sn\": -1, \"sm\": \"hə:'maiəni\", \"rec\": [], \"speach\": \"Hermione&type=1\", \"ver\": 1, \"sexp\": 0, \"type\": 2, \"oq\": \"hermione\", \"websame\": \"true\"}"
-    # json_obj = json.loads(json_str, encoding="utf-8")
-    # print json_obj
