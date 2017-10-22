@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script type="text/javascript" src="jquery-1.12.4.min.js"></script>
+    <script src="jquery-1.12.4.min.js"></script>
+    <script src="jquery-ui.js"></script>
+    <link rel="stylesheet" href="jquery-ui.css">
+    <style type="text/css">
+        body {
+            font-size: 100%;
+        }
+        .head {
+            background-color: #339933;
+
+        }
+        .head .field {
+            text-align: center;
+        }
+        .details {
+            background-color: #2b2b2b;
+            color: white;
+            display: none;
+            font-size: 70%;
+        }
+        .row {
+            background-color: #CCCC66;
+        }
+        .field {
+            display: inline-block;
+            /*overflow-x: hidden;*/
+            word-break: keep-all;
+        }
+        .no {
+            width: 8%;
+        }
+        .word {
+            width: 25%;
+        }
+        .symbol {
+            width: 25%;
+        }
+        .basic {
+            width: 35%;
+        }
+        p {
+            margin:0px;
+        }
+        .row .basic, .row .symbol {
+            font-size: 80%;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            $(".row").click(function () {
+                var index = $(this).attr('index');
+                $("#details_" + index).toggle("blind", {}, 500);
+            });
+        })
+    </script>
+</head>
+<body>
+<div class="head">
+    <div class="field no">
+        No.
+    </div>
+    <div class="field word">
+        Word
+    </div>
+    <div class="field symbol">
+        Phonetic Symbols
+    </div>
+    <div class="field basic">
+        Basic Descriptions
+    </div>
+</div>
+<div id="row_0" class="row" index="0">
+    <div class="field no">
+        1
+    </div>
+    <div class="field word">
+        Hermione
+    </div>
+    <div class="field symbol">
+        <p>uk. [hə:'maiəni]</p>
+        <p>us. [hə:'maiəni]</p>
+    </div>
+    <div class="field basic">
+        <div>n. 赫尔迈厄尼（女子名）；希腊神话Menelzus 与helen 之女</div>
+    </div>
+</div>
+<div id="details_0" class="details">
+单词在本书中共出现 269 次<br/>
+网络释义：<br/>
+    Hermione: 赫敏,妙丽,赫女星<br/>
+词组：<br/>
+    Hermione Corfield: 赫敏·科菲尔德<br/>
+    Hermione Grfrustrine: 赫敏·格兰杰
+</div>
+<div id="row_1" class="row" index="1">
+    <div class="field no">
+        2
+    </div>
+    <div class="field word">
+        potter
+    </div>
+    <div class="field symbol">
+        <p>uk. ['pɒtə]</p>
+        <p>us. ['pɑtɚ]</p>
+    </div>
+    <div class="field basic">
+        <p>n. 陶艺家，制陶工人</p>
+        <p>n. (Potter)人名；(英、荷、德、葡)波特</p>
+        <p>vt. 闲混，虚度</p>
+        <p>vi. 闲逛；慢条斯理地做事</p>
+    </div>
+</div>
+<div id="details_1" class="details">
+单词在本书中共出现 115 次<br/>
+网络释义：<br/>
+    potter: 陶工,哈利波特,波特<br/>
+词组：<br/>
+    Samantha Potter: 诗曼花·波特<br/>
+    Potter Glacier: 波特冰川
+</div>
+</body>
+</html>

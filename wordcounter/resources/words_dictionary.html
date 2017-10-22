@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script type="text/javascript" src="jquery-1.12.4.min.js"></script>
     <script src="jquery-1.12.4.min.js"></script>
     <script src="jquery-ui.js"></script>
     <link rel="stylesheet" href="jquery-ui.css">
     <style type="text/css">
-        * {
-            font-size: 26px;
-
+        body {
+            font-size: 100%;
+            width: auto;
         }
         .tab thead tr {
             background-color: #339933;
             text-align: center;
-            font-size: 18px;
             font-weight: bolder;
         }
 
@@ -22,7 +23,7 @@
         }
 
         .word {
-            font-size: 36px;
+            font-size: 100%;
             font-weight: bolder;
         }
         /*.tab tbody tr:nth-child(odd) {*/
@@ -33,10 +34,9 @@
         /*}*/
         .phonetic_symbol {
             font-family: "Times New Roman";
-        /*font-size: 20px;*/
         }
         .basic {
-            font-size:28px;
+            font-size: 100%;
         }
 
 
@@ -78,7 +78,7 @@
 </div>
 
 <script type="text/javascript" src="data.js" charset="utf-8"></script>
-<script type="text/javascript">
+<script type="text/javascript" charset="utf-8">
     var table = $("#words_table");
 
     function appendNewLineToTable(word, index) {
@@ -190,7 +190,7 @@
             var options = { percent: 50 };
             console.info(id);
             console.info($("#"+id+"_hidden"));
-            $("#"+id+"_hidden").toggle();
+            $("#"+id+"_hidden").toggle("blind");
         })
     })
 </script>
