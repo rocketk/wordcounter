@@ -9,4 +9,6 @@ if __name__ == '__main__':
     output_path = config.get("default", "output_path")
     os.makedirs(output_path)
     shutil.copy("resources/jquery-1.12.4.min.js", output_path + "jquery-1.12.4.min.js")
+    shutil.copy("resources/jquery-ui.js", output_path + "jquery-ui.js")
+    shutil.copy("resources/jquery-ui.css", output_path + "jquery-ui.css")
     shutil.copy("resources/words_dictionary.html", output_path + "words_dictionary.html")

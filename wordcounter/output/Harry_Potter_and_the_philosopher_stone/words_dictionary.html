@@ -2,18 +2,29 @@
 <html>
 <head>
     <script type="text/javascript" src="jquery-1.12.4.min.js"></script>
+    <script src="jquery-1.12.4.min.js"></script>
+    <script src="jquery-ui.js"></script>
+    <link rel="stylesheet" href="jquery-ui.css">
     <style type="text/css">
+        * {
+            font-size: 26px;
+
+        }
         .tab thead tr {
-            background-color: #CCCCFF;
+            background-color: #339933;
             text-align: center;
             font-size: 18px;
             font-weight: bolder;
         }
 
         .tab tbody {
-            background-color: #FFCCCC;
+            background-color: #CCCC66;
         }
 
+        .word {
+            font-size: 36px;
+            font-weight: bolder;
+        }
         /*.tab tbody tr:nth-child(odd) {*/
         /*background-color: #FFCCCC;*/
         /*}*/
@@ -22,13 +33,12 @@
         /*}*/
         .phonetic_symbol {
             font-family: "Times New Roman";
-            /*font-size: 20px;*/
+        /*font-size: 20px;*/
+        }
+        .basic {
+            font-size:28px;
         }
 
-        .word {
-            font-size: 18px;
-            font-weight: bolder;
-        }
 
         td {
             padding: 5px;
@@ -37,6 +47,13 @@
         .key {
             font-weight: bolder;
         }
+
+        .hidden_row{
+            background-color: #666633;
+            text-align: left;
+            display: none;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -44,20 +61,20 @@
     <thead>
     <tr>
         <td>No.</td>
-        <td>Count</td>
+        <!--<td>Count</td>-->
         <td>Word</td>
         <td>Phonetic Symbols</td>
         <td>Basic Descriptions</td>
-        <td>Web Descriptions</td>
-        <td>Phrases</td>
+        <!--<td>Web Descriptions</td>-->
+        <!--<td>Phrases</td>-->
     </tr>
     </thead>
 
 
 </table>
 <div id="toolbar">
-    <a href="javascript:void(0)" onclick="showMore(100)">Next 100 Words</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="javascript:void(0)" onclick="showMore()">Show All Words</a>
+
+
 </div>
 
 <script type="text/javascript" src="data.js" charset="utf-8"></script>
@@ -65,17 +82,13 @@
     var table = $("#words_table");
 
     function appendNewLineToTable(word, index) {
-        var tr = $("<tr id='tr_" + (index + 1) + "'></tr>");
+        var tr = $("<tr id='tr_" + (index + 1) + "' class='normal_row'></tr>");
         // td: No.
         var td_no = $("<td style='text-align: right;'></td>");
         td_no.append("" + (index + 1));
         tr.append(td_no);
-        // td: count
-        var td_count = $("<td style='text-align: right;'></td>");
-        if (word['count_in_book']) {
-            td_count.append(word['count_in_book']);
-        }
-        tr.append(td_count);
+        
+//        tr.append(td_count);
         // td: the word
         var td_word = $("<td class='word'></td>"); // the word
         if (word["rq"]) {
@@ -96,30 +109,47 @@
         }
         tr.append(td_phonetic_symbol);
         // td: basic desciption
-        var td_basic = $("<td></td>"); // basic desciption
+        var td_basic = $("<td class='basic'></td>"); // basic desciption
         if (word.basic) {
             for (var i = 0; i < word.basic.length; i++) {
                 td_basic.append(word.basic[i] + "<br/>");
             }
         }
         tr.append(td_basic);
+        
+        table.append(tr);
+        
+        var tr_detail = $("<tr id='tr_" + (index + 1) + "_hidden' class='hidden_row'></tr>");
+        var td_detail = $("<td colspan='4'></td>");
+        // td: count
+        var div_count = $("<div></div>");
+        if (word['count_in_book']) {
+            div_count.append("单词在本书中共出现 " + word['count_in_book'] + " 次");
+//            div_count.append(word['count_in_book']);
+        }
         // td: web description
-        var td_web = $("<td></td>"); // web description
+        var div_web = $("<div></div>"); // web description
+        div_web.append("网络释义：<br/>");
         if (word.web && word.web.length > 0) {
             var key = Object.keys(word.web[0])[0];
-            td_web.append("<span class='key'> " + key + "</span>: " + word.web[0][key]);
+            div_web.append("<span class='key'> &nbsp;&nbsp;&nbsp;&nbsp;" + key + "</span>: " + word.web[0][key]);
         }
-        tr.append(td_web);
+//        tr.append(td_web);
         // td: phrases
-        var td_phrases = $("<td></td>"); // phrases
+        var div_phrases = $("<div></div>"); // phrases
+        div_phrases.append("词组：<br/>");
         if (word.web && word.web.length > 1) {
             for (var i = 1; i < word.web.length; i++) {
                 var key = Object.keys(word.web[i])[0];
-                td_phrases.append("<span class='key'> " + key + "</span>: " + word.web[i][key] + "<br/>");
+                div_phrases.append("<span class='key'> &nbsp;&nbsp;&nbsp;&nbsp;" + key + "</span>: " + word.web[i][key] + "<br/>");
             }
         }
-        tr.append(td_phrases);
-        table.append(tr);
+//        tr.append(td_phrases);
+        td_detail.append(div_count);
+        td_detail.append(div_web);
+        td_detail.append(div_phrases);
+        tr_detail.append(td_detail);
+        table.append(tr_detail)
     }
 
     var startIndex = 0;
@@ -144,10 +174,25 @@
     }
 
     //    console.log(words.length);
-    var n = words.length > 100 ? 100 : words.length;
+    var n = words.length > 10 ? 10 : words.length;
     console.log("words.length: " + words.length);
     showMore(n);
 
+    $("#toolbar").append("<a href=\"javascript:void(0)\" onclick=\"showMore(100)\">Next "+n+" Words</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+    $("#toolbar").append("<a href=\"javascript:void(0)\" onclick=\"showMore()\">Show All Words</a>");
+</script>
+
+<script>
+    $(function () {
+//        $( ".hidden_row:visible" ).removeAttr( "style" ).fadeOut();
+        $(".normal_row").click(function(){
+            var id = $(this).attr("id");
+            var options = { percent: 50 };
+            console.info(id);
+            console.info($("#"+id+"_hidden"));
+            $("#"+id+"_hidden").toggle();
+        })
+    })
 </script>
 
 </body>
