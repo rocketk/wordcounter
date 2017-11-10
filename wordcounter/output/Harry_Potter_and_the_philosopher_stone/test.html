@@ -14,7 +14,7 @@
 
         .head {
             background-color: #339933;
-
+            text-align: center;
         }
 
         .head .field {
@@ -34,6 +34,9 @@
             background-color: whitesmoke;
             box-shadow: 0 10px 10px rgba(0, 0, 0, 0.10), 0 6px 6px rgba(0, 0, 0, 0.10);
             border-bottom: 1px solid silver;
+            height: 70px;
+            text-align: center;
+            overflow:hidden
         }
 
         .field {
@@ -67,12 +70,15 @@
         }
     </style>
     <script type="text/javascript">
-        $(function () {
-            $(".row").click(function () {
-                var index = $(this).attr('index');
-                $("#details_" + index).toggle("blind", {}, 500);
-            });
-        })
+        //        $(function () {
+        //            $(".row").click(function () {
+        //                var index = $(this).attr('index');
+        //                $("#details_" + index).toggle("blind", {}, 500);
+        //            });
+        //        })
+        function show_details(index) {
+            $("#details_" + index).toggle("blind", {}, 500);
+        }
     </script>
 </head>
 <body>
@@ -93,68 +99,65 @@
 </div>
 
 <div id="content_list">
-    <div id="row_0" class="row" index="0">
-        <div class="field no">
-            1
-        </div>
-        <div class="field word">
-            Hermione
-        </div>
-        <div class="field symbol">
-            <p>uk. [hə:'maiəni]</p>
-            <p>us. [hə:'maiəni]</p>
-        </div>
-        <div class="field basic">
-            <div>n. 赫尔迈厄尼（女子名）；希腊神话Menelzus 与helen 之女</div>
-        </div>
-    </div>
-    <div id="details_0" class="details">
-        单词在本书中共出现 269 次<br/>
-        网络释义：<br/>
-        Hermione: 赫敏,妙丽,赫女星<br/>
-        词组：<br/>
-        Hermione Corfield: 赫敏·科菲尔德<br/>
-        Hermione Grfrustrine: 赫敏·格兰杰
-    </div>
-    <div id="row_1" class="row" index="1">
-        <div class="field no">
-            2
-        </div>
-        <div class="field word">
-            potter
-        </div>
-        <div class="field symbol">
-            <p>uk. ['pɒtə]</p>
-            <p>us. ['pɑtɚ]</p>
-        </div>
-        <div class="field basic">
-            <p>n. 陶艺家，制陶工人</p>
-            <p>n. (Potter)人名；(英、荷、德、葡)波特</p>
-            <p>vt. 闲混，虚度</p>
-            <p>vi. 闲逛；慢条斯理地做事</p>
-        </div>
-    </div>
-    <div id="details_1" class="details">
-        单词在本书中共出现 115 次<br/>
-        网络释义：<br/>
-        potter: 陶工,哈利波特,波特<br/>
-        词组：<br/>
-        Samantha Potter: 诗曼花·波特<br/>
-        Potter Glacier: 波特冰川
-    </div>
+    <!--<div id="row_0" class="row" onclick="show_details(0)">-->
+        <!--<div class="field no">-->
+            <!--1-->
+        <!--</div>-->
+        <!--<div class="field word">-->
+            <!--Hermione-->
+        <!--</div>-->
+        <!--<div class="field symbol">-->
+            <!--<p>uk. [hə:'maiəni]</p>-->
+            <!--<p>us. [hə:'maiəni]</p>-->
+        <!--</div>-->
+        <!--<div class="field basic">-->
+            <!--<div>n. 赫尔迈厄尼（女子名）；希腊神话Menelzus 与helen 之女</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div id="details_0" class="details">-->
+        <!--单词在本书中共出现 269 次<br/>-->
+        <!--网络释义：<br/>-->
+        <!--Hermione: 赫敏,妙丽,赫女星<br/>-->
+        <!--词组：<br/>-->
+        <!--Hermione Corfield: 赫敏·科菲尔德<br/>-->
+        <!--Hermione Grfrustrine: 赫敏·格兰杰-->
+    <!--</div>-->
+    <!--<div id="row_1" class="row" index="-1" onclick="show_details(-1)">-->
+        <!--<div class="field no">-->
+            <!--2-->
+        <!--</div>-->
+        <!--<div class="field word">-->
+            <!--potter-->
+        <!--</div>-->
+        <!--<div class="field symbol">-->
+            <!--<p>uk. ['pɒtə]</p>-->
+            <!--<p>us. ['pɑtɚ]</p>-->
+        <!--</div>-->
+        <!--<div class="field basic">-->
+            <!--<p>n. 陶艺家，制陶工人</p>-->
+            <!--<p>n. (Potter)人名；(英、荷、德、葡)波特</p>-->
+            <!--<p>vt. 闲混，虚度</p>-->
+            <!--<p>vi. 闲逛；慢条斯理地做事</p>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div id="details_1" class="details">-->
+        <!--单词在本书中共出现 115 次<br/>-->
+        <!--网络释义：<br/>-->
+        <!--potter: 陶工,哈利波特,波特<br/>-->
+        <!--词组：<br/>-->
+        <!--Samantha Potter: 诗曼花·波特<br/>-->
+        <!--Potter Glacier: 波特冰川-->
+    <!--</div>-->
 
 </div>
-<div id="toolbar">
-
-
-</div>
+<div id="toolbar"></div>
 
 <script type="text/javascript" src="data.js" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
     var div_content = $("#content_list");
 
     function appendNewLineToTable(word, index) {
-        var div_row = $("<div id='row_" + index + "' class='row'></div>");
+        var div_row = $("<div id='row_" + index + "' class='row'  onclick='show_details(" + index + ")'></div>");
         // div: No.
         var div_no = $("<div class='field no'></div>");
         div_no.append("" + (index + 1));
@@ -167,18 +170,18 @@
         }
         div_row.append(div_word);
         // div: phonetic symbols
-        var div_phonetic_symbol = $("<div></div>");
+        var div_phonetic_symbol = $("<div class='field symbol'></div>");
         if (word['uksm']) {
             var p_phonetic_symbol_uk = $("<p class='phonetic_symbol'></p>");
+            p_phonetic_symbol_uk.append("uk. ");
             p_phonetic_symbol_uk.append("[" + word["uksm"] + "]");
-            div_phonetic_symbol.append("uk. ");
             div_phonetic_symbol.append(p_phonetic_symbol_uk);
 
         }
-        if(word['ussm']){
+        if (word['ussm']) {
             var p_phonetic_symbol_us = $("<p class='phonetic_symbol'></p>");
+            p_phonetic_symbol_us.append("us. ");
             p_phonetic_symbol_us.append("[" + word["ussm"] + "]");
-            div_phonetic_symbol.append("us. ");
             div_phonetic_symbol.append(p_phonetic_symbol_us);
         }
         div_row.append(div_phonetic_symbol);
