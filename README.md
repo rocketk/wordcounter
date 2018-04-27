@@ -13,11 +13,3 @@ cd wordcounter
 python word_counter.py sophiesworld_1_to_2.txt
 ```
 3. the result will be writen in the file named `result.txt`
-
-# contact me
-qq: 450550330
-
-email: pengyufreedom@aliyun.com
-
-
-please contact me when you get any problem!
