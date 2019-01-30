@@ -2,99 +2,143 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <script type="text/javascript" src="jquery-1.12.4.min.js"></script>
-    <script src="jquery-1.12.4.min.js"></script>
-    <script src="jquery-ui.js"></script>
-    <link rel="stylesheet" href="jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style type="text/css">
-        body {
-            font-size: 100%;
-            width: auto;
-        }
-        .tab thead tr {
-            background-color: #339933;
+
+        table thead tr th {
+            font-weight: bold;
             text-align: center;
-            font-weight: bolder;
+            align-items: center;
         }
 
-        .tab tbody {
-            background-color: #CCCC66;
-        }
-
-        .word {
-            font-size: 100%;
-            font-weight: bolder;
-        }
-        /*.tab tbody tr:nth-child(odd) {*/
-        /*background-color: #FFCCCC;*/
-        /*}*/
-        /*.tab tbody tr:nth-child(even) {*/
-        /*background-color: #FFFF99;*/
-        /*}*/
         .phonetic_symbol {
-            font-family: "Times New Roman";
-        }
-        .basic {
-            font-size: 100%;
+            white-space: nowrap;
         }
 
-
-        td {
-            padding: 5px;
+        .scroll_btn {
+            display: none; /* Hidden by default */
+            position: fixed; /* Fixed/sticky position */
+            z-index: 99; /* Make sure it does not overlap */
+            border: none; /* Remove borders */
+            outline: none; /* Remove outline */
+            background-color: red; /* Set a background color */
+            color: white; /* Text color */
+            cursor: pointer; /* Add a mouse pointer on hover */
+            padding: 15px; /* Some padding */
+            border-radius: 10px; /* Rounded corners */
+            font-size: 18px; /* Increase font size */
         }
 
-        .key {
-            font-weight: bolder;
+        #btn_top {
+            bottom: 100px; /* Place the button at the bottom of the page */
+            right: 30px; /* Place the button 30px from the right */
+        }
+        #btn_bottom {
+            bottom: 20px; /* Place the button at the bottom of the page */
+            right: 30px; /* Place the button 30px from the right */
         }
 
-        .hidden_row{
-            background-color: #666633;
-            text-align: left;
-            display: none;
-            color: white;
+        .scroll_btn:hover {
+            background-color: #555; /* Add a dark-grey background on hover */
         }
     </style>
+
+    <script>
+        var lastScrollTop = 0;
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () {
+            scrollFunction();
+        };
+
+        function scrollFunction() {
+//            console.info("document.body.scrollTop: " + document.body.scrollTop);
+//            console.info("document.documentElement.scrollTop: " + document.documentElement.scrollTop);
+            var currentScrollTopValue = getCurrentScrollTopValue();
+            if (currentScrollTopValue < lastScrollTop && currentScrollTopValue > 1000) {
+                document.getElementById("btn_top").style.display = "block";
+            } else {
+                document.getElementById("btn_top").style.display = "none";
+            }
+//            console.info("document.body.scrollHeight: " + document.body.scrollHeight);
+//            console.info("currentScrollTopValue: " + currentScrollTopValue);
+            if (currentScrollTopValue > lastScrollTop && document.body.scrollHeight - currentScrollTopValue > 1000) {
+                document.getElementById("btn_bottom").style.display = "block";
+            } else {
+                document.getElementById("btn_bottom").style.display = "none";
+            }
+            lastScrollTop = currentScrollTopValue;
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        }
+
+        // When the user clicks on the button, scroll to the bottom of the document
+        function bottomFunction() {
+            window.scrollTo(0, document.body.scrollHeight); // For Safari
+//            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        }
+
+        function getCurrentScrollTopValue() {
+            return max(document.body.scrollTop, document.documentElement.scrollTop);
+        }
+
+        function max(a, b) {
+            if (a > b) {
+                return a;
+            }
+            return b;
+        }
+    </script>
 </head>
 <body>
-<table id="words_table" class="tab">
+<table id="words_table" class="table table-hover">
     <thead>
     <tr>
-        <td>No.</td>
-        <!--<td>Count</td>-->
-        <td>Word</td>
-        <td>Phonetic Symbols</td>
-        <td>Basic Descriptions</td>
-        <!--<td>Web Descriptions</td>-->
-        <!--<td>Phrases</td>-->
+        <th>No.</th>
+        <th>Count</th>
+        <th>Word</th>
+        <th>Phonetic Symbols</th>
+        <th>Basic Descriptions</th>
+        <th>Web Descriptions</th>
+        <th>Phrases</th>
     </tr>
     </thead>
-
+    <tbody id="words_table_tbody"></tbody>
 
 </table>
-<div id="toolbar">
 
+<div id="toolbar" class="btn-group">
+    <button type="button" class="btn btn-primary" onclick="showMore(100)">Next 100 Words</button>
+    <button type="button" class="btn btn-primary" onclick="showMore()">All Words</button>
 
 </div>
 
+<button onclick="topFunction()" class="scroll_btn" id="btn_top" title="Go to top">Top</button>
+<button onclick="bottomFunction()" class="scroll_btn" id="btn_bottom" title="Go to bottom">Bottom</button>
+
 <script type="text/javascript" src="data.js" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
-    var table = $("#words_table");
+    var tbody = $("#words_table_tbody");
 
     function appendNewLineToTable(word, index) {
-        var tr = $("<tr id='tr_" + (index + 1) + "' class='normal_row'></tr>");
+//        console.info(word);
+        var tr_id = 'tr_' + (index + 1);
+        var tr = $("<tr id='" + tr_id + "'></tr>");
         // td: No.
         var td_no = $("<td style='text-align: right;'></td>");
         td_no.append("" + (index + 1));
-        tr.append(td_no);
 
-//        tr.append(td_count);
         // td: the word
         var td_word = $("<td class='word'></td>"); // the word
         if (word["rq"]) {
             td_word.append(word["rq"]);
         }
-        tr.append(td_word);
         // td: phonetic symbols
         var td_phonetic_symbol = $("<td></td>");
         if (word['ussm']) {
@@ -107,7 +151,6 @@
             td_phonetic_symbol.append("<br/>us. ");
             td_phonetic_symbol.append(phonetic_symbol_us_span);
         }
-        tr.append(td_phonetic_symbol);
         // td: basic desciption
         var td_basic = $("<td class='basic'></td>"); // basic desciption
         if (word.basic) {
@@ -115,54 +158,62 @@
                 td_basic.append(word.basic[i] + "<br/>");
             }
         }
-        tr.append(td_basic);
 
-        table.append(tr);
 
-        var tr_detail = $("<tr id='tr_" + (index + 1) + "_hidden' class='hidden_row'></tr>");
-        var td_detail = $("<td colspan='4'></td>");
         // td: count
-        var div_count = $("<div></div>");
+        var td_count = $("<td></td>");
         if (word['count_in_book']) {
-            div_count.append("单词在本书中共出现 " + word['count_in_book'] + " 次");
-//            div_count.append(word['count_in_book']);
+            td_count.append(word['count_in_book'])
         }
         // td: web description
-        var div_web = $("<div></div>"); // web description
-        div_web.append("网络释义：<br/>");
+        var td_web = $("<td></td>"); // web description
         if (word.web && word.web.length > 0) {
             var key = Object.keys(word.web[0])[0];
-            div_web.append("<span class='key'> &nbsp;&nbsp;&nbsp;&nbsp;" + key + "</span>: " + word.web[0][key]);
+            td_web.append("<span class='key'> &nbsp;&nbsp;&nbsp;&nbsp;" + key + "</span>: " + word.web[0][key]);
         }
-//        tr.append(td_web);
         // td: phrases
-        var div_phrases = $("<div></div>"); // phrases
-        div_phrases.append("词组：<br/>");
+        var td_phrases = $("<td></td>"); // phrases
         if (word.web && word.web.length > 1) {
             for (var i = 1; i < word.web.length; i++) {
                 var key = Object.keys(word.web[i])[0];
-                div_phrases.append("<span class='key'> &nbsp;&nbsp;&nbsp;&nbsp;" + key + "</span>: " + word.web[i][key] + "<br/>");
+                td_phrases.append("<span class='key'> &nbsp;&nbsp;&nbsp;&nbsp;" + key + "</span>: " + word.web[i][key] + "<br/>");
             }
         }
-//        tr.append(td_phrases);
-        td_detail.append(div_count);
-        td_detail.append(div_web);
-        td_detail.append(div_phrases);
-        tr_detail.append(td_detail);
-        table.append(tr_detail)
+
+        tr.append(td_no);
+        tr.append(td_count);
+        tr.append(td_word);
+        tr.append(td_phonetic_symbol);
+        tr.append(td_basic);
+        tr.append(td_web);
+        tr.append(td_phrases);
+
+        tbody.append(tr);
     }
 
+
+    //    console.log(words.length);
+    //    var n = words.length > 100 ? 100 : words.length;
+
+    //    showMore(n);
+
+    //    $("#toolbar").append("<a href=\"javascript:void(0)\" onclick=\"showMore(100)\">Next " + n + " Words</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+    //    $("#toolbar").append("<a href=\"javascript:void(0)\" onclick=\"showMore()\">Show All Words</a>");
+</script>
+
+<script>
     var startIndex = 0;
+    //    var n = words.length > 100 ? 100 : words.length;
+//    console.log("words.length: " + words.length);
 
     function showMore(n) {
-        console.log(n);
         if (!n) {
             n = words.length;
         }
         if (n > words.length - startIndex) {
             n = words.length - startIndex;
         }
-        console.log(n);
+//        console.log(n);
         for (var i = 0; i < n; i++) {
             var word = words[i + startIndex];
             appendNewLineToTable(word, i + startIndex);
@@ -173,26 +224,22 @@
         }
     }
 
-    //    console.log(words.length);
-    var n = words.length > 10 ? 10 : words.length;
-    console.log("words.length: " + words.length);
-    showMore(n);
 
-    $("#toolbar").append("<a href=\"javascript:void(0)\" onclick=\"showMore(100)\">Next "+n+" Words</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-    $("#toolbar").append("<a href=\"javascript:void(0)\" onclick=\"showMore()\">Show All Words</a>");
+    showMore(100);
+
 </script>
 
 <script>
-    $(function () {
-//        $( ".hidden_row:visible" ).removeAttr( "style" ).fadeOut();
-        $(".normal_row").click(function(){
-            var id = $(this).attr("id");
-            var options = { percent: 50 };
-            console.info(id);
-            console.info($("#"+id+"_hidden"));
-            $("#"+id+"_hidden").toggle("blind");
-        })
-    })
+    //    $(function () {
+    ////        $( ".hidden_row:visible" ).removeAttr( "style" ).fadeOut();
+    //        $(".normal_row").click(function(){
+    //            var id = $(this).attr("id");
+    //            var options = { percent: 50 };
+    //            console.info(id);
+    //            console.info($("#"+id+"_hidden"));
+    //            $("#"+id+"_hidden").toggle("blind");
+    //        })
+    //    })
 </script>
 
 </body>
