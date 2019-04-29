@@ -57,7 +57,7 @@
 //            console.info("document.body.scrollTop: " + document.body.scrollTop);
 //            console.info("document.documentElement.scrollTop: " + document.documentElement.scrollTop);
             var currentScrollTopValue = getCurrentScrollTopValue();
-            if (currentScrollTopValue < lastScrollTop && currentScrollTopValue > 1000) {
+            if (currentScrollTopValue < lastScrollTop && currentScrollTopValue > 500) {
                 document.getElementById("btn_top").style.display = "block";
             } else {
                 document.getElementById("btn_top").style.display = "none";
@@ -103,7 +103,7 @@
         <th>No.</th>
         <th>Count</th>
         <th>Word</th>
-        <th>Phonetic Symbols</th>
+        <th>Phonetic <br/> Symbols</th>
         <th>Basic Descriptions</th>
         <th>Web Descriptions</th>
         <th>Phrases</th>

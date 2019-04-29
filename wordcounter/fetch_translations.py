@@ -21,6 +21,7 @@ def fetch_translations_from_file(output_path="output/", words_file="filtered_wor
             else:
                 try:
                     trans = fetch_translation_from_internet(word)
+                    print "{0} is fetched from internet, fetched data: {1}".format(word, trans)
                     dictionary_db_cache[word] = deepcopy(trans)
                     count_from_internet += 1
                     db_file.write(json.dumps(trans, ensure_ascii=False) + "\n")
@@ -85,6 +86,9 @@ def remove_duplicate_by_rq(trans_list):
     new_trans_list = []
     rq_list = []
     for one in trans_list:
+        if 'rq' not in one:
+            print one
+            continue
         if one['rq'] not in rq_list:
             rq_list.append(one['rq'])
             new_trans_list.append(one)
